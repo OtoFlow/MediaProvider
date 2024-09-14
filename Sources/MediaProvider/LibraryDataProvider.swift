@@ -15,6 +15,8 @@ public protocol LibraryDataProvider {
 
     func fetchArtists() async throws -> [Artist]
 
+    func fetchArtist(_ artistID: String) async throws -> Artist?
+
     func fetchLyrics(itemID: String) async throws -> [Double: String?]?
 
     func performAction(_ action: ItemAction, itemID: String) async throws -> ItemAction.Status

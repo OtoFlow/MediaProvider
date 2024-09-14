@@ -47,7 +47,7 @@ public final class Artist: Item {
 
 extension Artist {
 
-    static func reduced(_ artist: Item.ReducedArtist) -> Artist {
+    public static func reduced(_ artist: Item.ReducedArtist) -> Artist {
         Artist(id: artist.id, name: artist.name)
     }
 }

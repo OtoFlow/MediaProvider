@@ -49,6 +49,18 @@ extension JellyfinSession {
         public let deviceID: String
 
         public let version: String
+
+        public init(
+            client: String,
+            deviceName: String,
+            deviceID: String,
+            version: String
+        ) {
+            self.client = client
+            self.deviceName = deviceName
+            self.deviceID = deviceID
+            self.version = version
+        }
     }
 }
 

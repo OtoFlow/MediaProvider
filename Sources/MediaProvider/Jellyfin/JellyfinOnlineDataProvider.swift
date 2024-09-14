@@ -99,7 +99,7 @@ public class JellyfinOnlineDataProvider: LibraryDataProvider {
     public func fetchArtists() async throws -> [Artist] {
         let client = userSession.client
 
-        var parameters = Paths.GetArtistsParameters()
+        let parameters = Paths.GetArtistsParameters()
 
         let request = Paths.getArtists(parameters: parameters)
         let response = try await client.send(request)
@@ -107,6 +107,19 @@ public class JellyfinOnlineDataProvider: LibraryDataProvider {
         return response.value.items?.map {
             Artist.convertFromJellyfin(server: userSession.server, item: $0)
         } ?? []
+    }
+
+    public func fetchArtist(_ artistID: String) async throws -> Artist? {
+        let client = userSession.client
+
+        let request = Paths.getItem(itemID: artistID, userID: userSession.user.id)
+        let response = try await client.send(request)
+
+        guard response.value.id == artistID else {
+            return nil
+        }
+
+        return .convertFromJellyfin(server: userSession.server, item: response.value)
     }
 
     public func fetchLyrics(itemID: String) async throws -> [Double : String?]? {

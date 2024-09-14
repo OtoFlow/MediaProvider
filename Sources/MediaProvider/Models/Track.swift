@@ -102,14 +102,14 @@ extension Track {
     }
 
     public struct Album: Codable {
-        let id: String
-        let name: String
+        public let id: String
+        public let name: String
     }
 
     public struct Index: Comparable, Codable {
 
-        let idx: Int?
-        let disk: Int
+        public let idx: Int?
+        public let disk: Int
 
         public static func < (lhs: Track.Index, rhs: Track.Index) -> Bool {
             if lhs.disk == rhs.disk {
