@@ -12,7 +12,7 @@ public final class Track: Item {
 
     public let type: MediaType
 
-    public let album: Album
+    public let album: Album?
 
     public let artists: [ReducedArtist]
 
@@ -32,7 +32,7 @@ public final class Track: Item {
         artwork: Artwork? = nil,
         isFavorite: Bool,
         type: MediaType,
-        album: Album,
+        album: Album? = nil,
         artists: [ReducedArtist] = [],
         index: Index,
         duration: TimeInterval,
@@ -101,7 +101,7 @@ extension Track {
         case video
     }
 
-    public struct Album: Codable {
+    public struct Album: Identifiable, Hashable, Codable {
         public let id: String
         public let name: String
     }

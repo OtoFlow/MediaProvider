@@ -67,10 +67,9 @@ public class JellyfinOnlineDataProvider: LibraryDataProvider {
             let albumDict = try await albumDictionary
             let albums = try await tracks
                 .reduce(into: []) { (partialResult: inout [String], track) in
-                    let albumId = track.album.id
-                    if !set.contains(albumId) {
-                        partialResult.append(albumId)
-                        set.insert(albumId)
+                    if let albumID = track.album?.id, !set.contains(albumID) {
+                        partialResult.append(albumID)
+                        set.insert(albumID)
                     }
                 }
                 .compactMap { albumDict[$0] }

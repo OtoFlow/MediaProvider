@@ -28,13 +28,20 @@ extension Track {
             artwork = .convertFromJellyfin(server: server, itemID: item.albumID ?? "")
         }
 
+        let album: Album?
+        if let albumID = item.albumID {
+            album = .init(id: albumID, name: item.album ?? "")
+        } else {
+            album = nil
+        }
+
         let track = Track(
             id: item.id ?? "",
             name: item.name ?? "",
             artwork: artwork,
             isFavorite: item.userData?.isFavorite ?? false,
             type: item.type == .audio ? .audio : .video,
-            album: .init(id: item.albumID ?? "", name: item.album ?? ""),
+            album: album,
             artists: artists,
             index: .init(idx: item.indexNumber, disk: item.parentIndexNumber ?? -1),
             duration: Double(item.runTimeTicks ?? 0) / 10_000_000,

@@ -7,7 +7,7 @@
 
 extension Item {
 
-    public struct ReducedArtist: Identifiable, Codable {
+    public struct ReducedArtist: Identifiable, Hashable, Codable {
 
         public let id: String
 
