@@ -67,7 +67,7 @@ public final class Track: Item {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.type = try container.decode(MediaType.self, forKey: .type)
-        self.album = try container.decode(Album.self, forKey: .album)
+        self.album = try container.decodeIfPresent(Album.self, forKey: .album)
         self.artists = try container.decode([ReducedArtist].self, forKey: .artists)
         self.index = try container.decode(Index.self, forKey: .index)
         self.duration = try container.decode(TimeInterval.self, forKey: .duration)
@@ -82,7 +82,7 @@ public final class Track: Item {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(self.type, forKey: .type)
-        try container.encode(self.album, forKey: .album)
+        try container.encodeIfPresent(self.album, forKey: .album)
         try container.encode(self.artists, forKey: .artists)
         try container.encode(self.index, forKey: .index)
         try container.encode(self.duration, forKey: .duration)
