@@ -9,9 +9,21 @@ import Foundation
 
 public protocol LibraryDataProvider {
 
-    func fetchTracks(type: [Track.MediaType], albumID: String?, artistID: String?, filter: ItemFilter?) async throws -> [Track]
+    func fetchTracks(
+        type: [Track.MediaType],
+        albumID: String?,
+        artistID: String?,
+        startIndex: Int?,
+        limit: Int?,
+        filter: ItemFilter?
+    ) async throws -> [Track]
 
-    func fetchAlbums(artistID: String?, filter: ItemFilter?) async throws -> [Album]
+    func fetchAlbums(
+        artistID: String?,
+        startIndex: Int?,
+        limit: Int?,
+        filter: ItemFilter?
+    ) async throws -> [Album]
 
     func fetchArtists() async throws -> [Artist]
 
@@ -28,15 +40,31 @@ extension LibraryDataProvider {
         type: [Track.MediaType] = [.audio],
         albumID: String? = nil,
         artistID: String? = nil,
+        startIndex: Int? = nil,
+        limit: Int? = nil,
         filter: ItemFilter? = nil
     ) async throws -> [Track] {
-        try await fetchTracks(type: type, albumID: albumID, artistID: artistID, filter: filter)
+        try await fetchTracks(
+            type: type,
+            albumID: albumID,
+            artistID: artistID,
+            startIndex: startIndex,
+            limit: limit,
+            filter: filter
+        )
     }
 
     public func fetchAlbums(
         artistID: String? = nil,
+        startIndex: Int? = nil,
+        limit: Int? = nil,
         filter: ItemFilter? = nil
     ) async throws -> [Album] {
-        try await fetchAlbums(artistID: artistID, filter: filter)
+        try await fetchAlbums(
+            artistID: artistID,
+            startIndex: startIndex,
+            limit: limit,
+            filter: filter
+        )
     }
 }

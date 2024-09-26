@@ -20,6 +20,8 @@ public class JellyfinOnlineDataProvider: LibraryDataProvider {
         type: [Track.MediaType],
         albumID: String?,
         artistID: String?,
+        startIndex: Int?,
+        limit: Int?,
         filter: ItemFilter?
     ) async throws -> [Track] {
         let client = userSession.client
@@ -35,6 +37,8 @@ public class JellyfinOnlineDataProvider: LibraryDataProvider {
 
         var parameters = Paths.GetItemsParameters(
             userID: userSession.user.id,
+            startIndex: startIndex,
+            limit: limit,
             isRecursive: true,
             parentID: albumID,
             fields: [.parentID],
@@ -55,29 +59,18 @@ public class JellyfinOnlineDataProvider: LibraryDataProvider {
         } ?? []
     }
 
-    public func fetchAlbums(artistID: String?, filter: ItemFilter?) async throws -> [Album] {
+    public func fetchAlbums(
+        artistID: String?,
+        startIndex: Int?,
+        limit: Int?,
+        filter: ItemFilter?
+    ) async throws -> [Album] {
         let client = userSession.client
-
-        if case .recentlyAdded = filter {
-            async let tracks = fetchTracks(artistID: artistID, filter: filter)
-            async let albumDictionary = fetchAlbums(artistID: artistID).reduce(into: [:]) { dict, album in
-                dict[album.id] = album
-            }
-            var set = Set<String>()
-            let albumDict = try await albumDictionary
-            let albums = try await tracks
-                .reduce(into: []) { (partialResult: inout [String], track) in
-                    if let albumID = track.album?.id, !set.contains(albumID) {
-                        partialResult.append(albumID)
-                        set.insert(albumID)
-                    }
-                }
-                .compactMap { albumDict[$0] }
-            return albums
-        }
 
         var parameters = Paths.GetItemsParameters(
             userID: userSession.user.id,
+            startIndex: startIndex,
+            limit: limit,
             isRecursive: true,
             fields: [.genres, .overview, .dateCreated],
             includeItemTypes: [.musicAlbum],
